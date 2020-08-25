@@ -2,6 +2,8 @@ import hashlib
 import binascii
 from ecdsa import  SigningKey, NIST384p
 
+COINBASE = 100
+
 class Transaction:
     def __init__(self):
         self.id = None
@@ -58,7 +60,7 @@ def idTransaction(transaction):
     return  hashlib.sha256((str(inputContents) + str(outputContents)).encode('utf-8')).hexdigest()
 
 def createSigningKey():
-    return signingkey.generate(curve=NIST380p)
+    return SigningKey.generate(curve=NIST384p)
 
 def signingInput(transaction, inputIndex, listUnspentOutput, key):
     inpt = transaction.inputs[inputIndex]
@@ -79,3 +81,16 @@ def validatingTransactionId(id, transaction):
         return  True
     else:
         return False
+
+def validatingCoinbase(transaction, index):
+    if idTransaction(transaction) != transaction.id:
+        return False
+    elif len(transaction.inputs) != 1:
+        return False
+    elif transaction.inputs[0].outputIndex != index:
+        return False
+    elif len(transaction.outputs) != 1:
+        return False
+    elif transaction.outputs[0].amount != COINBASE:
+        return False
+    return True

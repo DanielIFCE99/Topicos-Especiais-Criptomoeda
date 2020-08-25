@@ -79,5 +79,5 @@ class Blockchain:
 def calculateHash(index, previousHash, timestamp, data, difficulty, nonce):
     return hashlib.sha256((str(index) + previousHash + str(timestamp) + data + str(difficulty) + str(nonce)).encode('utf-8')).hexdigest()
 
-#ts = int(round(time.time() * 1000))
-#genesisBlock = Block(0, "", ts, "Genesis block", calculateHash(0, "", ts, "Genesis block"))
+ts = int(round(time.time() * 1000))
+genesisBlock = Block(0, "", ts, "Genesis block", 0, 1,  calculateHash(0, "", ts, "Genesis block", 0, 1))
